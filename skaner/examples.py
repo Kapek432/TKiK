@@ -1,0 +1,15 @@
+TEST_EXPRESSIONS = [
+    "2+3*(76+8/3)",
+    "x1 - 5 * (y + z)",
+    "2137 + 420 - 666",
+    "my_var * 2 + (another_var - 3)",
+    "2 + @3", 
+    "   42   *   (  x  +  y )   ",
+    "invalid#token",
+    "123abc",
+    "var_name_with_underscore",
+    "234 + & - 5 / >",
+    "^&%$#@!",
+    "   ",
+    "",
+]
