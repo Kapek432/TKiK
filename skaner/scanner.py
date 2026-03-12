@@ -1,5 +1,7 @@
 from operators import OPERATORS
 from examples import TEST_EXPRESSIONS
+
+
 class Token:
     """
     Klasa reprezentująca token - podstawową jednostkę leksykalną.
