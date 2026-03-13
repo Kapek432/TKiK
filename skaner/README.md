@@ -16,7 +16,7 @@ Dla naszego skanera zdefiniujemy następujące tokeny:
 | `MUL` | `*` | `*` |
 | `DIV` | `/` | `/` |
 | `LPAREN` | `(` | `(` |
-| `RPAREN` | `)` | `)` |
+| `RPAREN` | `)` | `)` |ś
 | `EOF` | Koniec wyrażenia | - |
 | `ERROR` | Nieznany znak | `@`, `#` |
 
@@ -50,7 +50,7 @@ Funkcja `next_token(expr: str, pos: int)` zwraca `tuple[Token, int]`:
 1. **Pomiń białe znaki** - pomija wszystkie spacje i tabulatory, aktualizując `pos` i kolumnę
 2. **EOF** - jeśli `pos` jest poza długością `expr`, zwraca token `EOF`
 3. **Cyfra** - zbiera kolejne cyfry, tworząc token `INT`
-4. **Litera / `_`** - zbiera litery, cyfry i `_`, tworząc token `ID`
+4. **Litera / Cyfra (po literze lub _) / `_`** - zbiera litery, cyfry i `_`, tworząc token `ID`
 5. **Operator / nawias** - tworzy tokeny dla operatorów i nawiasów na podstawie słownika
 6. **Inny znak** - tworzy token `ERROR` z numerem kolumny i kontynuuje skanowanie
 ---

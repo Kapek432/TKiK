@@ -48,7 +48,7 @@ def next_token(expr: str, pos: int) -> tuple[Token, int]:
             pos += 1
         return Token("INT", expr[start_pos:pos], start_pos + 1), pos
     
-    # 4. Litera / _ - zbieramy litery, cyfry i _, tworząc token ID
+    # 4. Litera / Cyfra (po literze lub _) / `_` - zbieramy litery, cyfry i _, tworząc token ID
     if expr[pos].isalpha() or expr[pos] == '_':
         start_pos = pos
         while pos < len(expr) and (expr[pos].isalnum() or expr[pos] == '_'):
