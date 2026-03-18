@@ -65,7 +65,6 @@ Funkcja `next_token(expr: str, pos: int)` zwraca `tuple[Token, int]`:
 ## Przykład
 
 Wejście: `2+3*(76+8/3)`
-
 ```
 (INT, '2')     col. 1
 (PLUS, '+')    col. 2
