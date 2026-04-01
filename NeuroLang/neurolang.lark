@@ -1,0 +1,79 @@
+// Punkt wejścia do programu
+start: instruction+
+
+instruction: var_decl 
+           | network_block 
+           | config_block 
+           | data_block
+           | load_model_cmd
+           | train_cmd
+           | save_cmd
+
+// Deklaracje zmiennych
+var_decl: "let" CNAME "=" math_expr [","]
+var_assign: CNAME "=" math_expr [","]
+
+// Blok sieci neuronowej
+network_block: "network" CNAME ["(" arguments ")"] "{" net_statement+ "}"
+
+net_statement: layer_decl 
+             | repeat_block 
+             | var_assign
+
+layer_decl: "layer" ":" call [","]
+repeat_block: "repeat" (NUMBER | CNAME) "times" "{" net_statement+ "}" [","]
+
+// Blok wczytywania danych
+data_block: "load_data" (CNAME | ESCAPED_STRING) ["as" CNAME] "{" config_item+ "}"
+
+// Blok wczytywania modelu z pliku
+load_model_cmd: "load_model" CNAME "from" ESCAPED_STRING
+
+// Blok konfiguracji treningu
+config_block: "train_config" CNAME "{" config_item+ "}"
+
+config_item: CNAME ":" config_value [","]
+config_value: call | math_expr | boolean | ESCAPED_STRING | list_expr
+
+// Listy - do przekazywania metryk
+list_expr: "[" [config_value ("," config_value)*] "]"
+
+// Komenda trenowania modelu
+train_cmd: "train" CNAME "with" CNAME "on" CNAME ["using" device_type]
+
+// Dozwolone wartości dla device_type, ! oznacza, że device_type jest terminalem, a nie regułą, 
+// co pozwala na bezpośrednie użycie tych słów kluczowych bez konieczności definiowania ich jako osobnych reguł
+!device_type: "cpu" | "gpu" | "cuda" | "mps"
+
+// Komenda zapisywania modelu
+save_cmd: "save" CNAME "to" ESCAPED_STRING
+
+// Wywołania funkcji
+call: CNAME "(" [arguments] ")"
+arguments: arg ("," arg)*
+arg: arg_value | CNAME "=" arg_value
+arg_value: call | math_expr | ESCAPED_STRING | boolean | list_expr
+
+// Wyrażenia matematyczne
+math_expr: term (ADD_OP term)*
+term: factor (MUL_OP factor)*
+factor: NUMBER | CNAME | "(" math_expr ")"
+
+// Operatory matematyczne
+ADD_OP: "+" | "-"
+MUL_OP: "*" | "/" | "//"
+
+// Wartości boolean
+boolean: "true" -> true_val
+       | "false" -> false_val
+
+// Importy i ignorowanie białych znaków oraz komentarzy
+%import common.CNAME
+%import common.NUMBER
+%import common.ESCAPED_STRING
+%import common.WS
+%ignore WS
+
+// Komentarze # - ignorowane przez parser
+COMMENT: /#[^\n]*/
+%ignore COMMENT

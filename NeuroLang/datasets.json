@@ -1,0 +1,22 @@
+{
+    "MNIST": {
+        "pytorch_class": "torchvision.datasets.MNIST",
+        "default_args": {"root": "./data", "train": true, "download": true}
+    },
+    "FashionMNIST": {
+        "pytorch_class": "torchvision.datasets.FashionMNIST",
+        "default_args": {"root": "./data", "train": true, "download": true}
+    },
+    "CIFAR10": {
+        "pytorch_class": "torchvision.datasets.CIFAR10",
+        "default_args": {"root": "./data", "train": true, "download": true}
+    },
+    "CIFAR100": {
+        "pytorch_class": "torchvision.datasets.CIFAR100",
+        "default_args": {"root": "./data", "train": true, "download": true}
+    },
+    "SVHN": {
+        "pytorch_class": "torchvision.datasets.SVHN",
+        "default_args": {"root": "./data", "split": "train", "download": true}
+    }
+}

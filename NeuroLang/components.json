@@ -1,0 +1,243 @@
+{
+    "Dense": {
+        "pytorch_name": "torch.nn.Linear",
+        "required_parameters": [
+            "in_features",
+            "out_features"
+        ],
+        "optional_parameters": {
+            "bias": true
+        }
+    },
+    "Conv1D": {
+        "pytorch_name": "torch.nn.Conv1d",
+        "required_parameters": [
+            "in_channels",
+            "out_channels",
+            "kernel_size"
+        ],
+        "optional_parameters": {
+            "stride": 1,
+            "padding": 0,
+            "dilation": 1,
+            "groups": 1,
+            "bias": true
+        }
+    },
+    "Conv2D": {
+        "pytorch_name": "torch.nn.Conv2d",
+        "required_parameters": [
+            "in_channels",
+            "out_channels",
+            "kernel_size"
+        ],
+        "optional_parameters": {
+            "stride": 1,
+            "padding": 0,
+            "dilation": 1,
+            "groups": 1,
+            "bias": true
+        }
+    },
+    "MaxPool1D": {
+        "pytorch_name": "torch.nn.MaxPool1d",
+        "required_parameters": [
+            "kernel_size"
+        ],
+        "optional_parameters": {
+            "stride": null,
+            "padding": 0
+        }
+    },
+    "MaxPool2D": {
+        "pytorch_name": "torch.nn.MaxPool2d",
+        "required_parameters": [
+            "kernel_size"
+        ],
+        "optional_parameters": {
+            "stride": null,
+            "padding": 0
+        }
+    },
+    "AvgPool2D": {
+        "pytorch_name": "torch.nn.AvgPool2d",
+        "required_parameters": [
+            "kernel_size"
+        ],
+        "optional_parameters": {
+            "stride": null,
+            "padding": 0
+        }
+    },
+    "ReLU": {
+        "pytorch_name": "torch.nn.ReLU",
+        "required_parameters": [],
+        "optional_parameters": {
+            "inplace": false
+        }
+    },
+    "LeakyReLU": {
+        "pytorch_name": "torch.nn.LeakyReLU",
+        "required_parameters": [],
+        "optional_parameters": {
+            "negative_slope": 0.01,
+            "inplace": false
+        }
+    },
+    "Sigmoid": {
+        "pytorch_name": "torch.nn.Sigmoid",
+        "required_parameters": [],
+        "optional_parameters": {}
+    },
+    "Tanh": {
+        "pytorch_name": "torch.nn.Tanh",
+        "required_parameters": [],
+        "optional_parameters": {}
+    },
+    "Softmax": {
+        "pytorch_name": "torch.nn.Softmax",
+        "required_parameters": [],
+        "optional_parameters": {
+            "dim": 1
+        }
+    },
+    "Dropout": {
+        "pytorch_name": "torch.nn.Dropout",
+        "required_parameters": [],
+        "optional_parameters": {
+            "p": 0.5,
+            "inplace": false
+        }
+    },
+    "BatchNorm1D": {
+        "pytorch_name": "torch.nn.BatchNorm1d",
+        "required_parameters": [
+            "num_features"
+        ],
+        "optional_parameters": {
+            "eps": 1e-05,
+            "momentum": 0.1,
+            "affine": true
+        }
+    },
+    "BatchNorm2D": {
+        "pytorch_name": "torch.nn.BatchNorm2d",
+        "required_parameters": [
+            "num_features"
+        ],
+        "optional_parameters": {
+            "eps": 1e-05,
+            "momentum": 0.1,
+            "affine": true
+        }
+    },
+    "LayerNorm": {
+        "pytorch_name": "torch.nn.LayerNorm",
+        "required_parameters": [
+            "normalized_shape"
+        ],
+        "optional_parameters": {
+            "eps": 1e-05,
+            "elementwise_affine": true
+        }
+    },
+    "Flatten": {
+        "pytorch_name": "torch.nn.Flatten",
+        "required_parameters": [],
+        "optional_parameters": {
+            "start_dim": 1,
+            "end_dim": -1
+        }
+    },
+    "CrossEntropyLoss": {
+        "pytorch_name": "torch.nn.CrossEntropyLoss",
+        "required_parameters": [],
+        "optional_parameters": {}
+    },
+    "MSELoss": {
+        "pytorch_name": "torch.nn.MSELoss",
+        "required_parameters": [],
+        "optional_parameters": {}
+    },
+    "BCELoss": {
+        "pytorch_name": "torch.nn.BCELoss",
+        "required_parameters": [],
+        "optional_parameters": {}
+    },
+    "Adam": {
+        "pytorch_name": "torch.optim.Adam",
+        "required_parameters": [],
+        "optional_parameters": {
+            "lr": 0.001,
+            "betas": [
+                0.9,
+                0.999
+            ],
+            "eps": 1e-08,
+            "weight_decay": 0
+        }
+    },
+    "SGD": {
+        "pytorch_name": "torch.optim.SGD",
+        "required_parameters": [],
+        "optional_parameters": {
+            "lr": 0.01,
+            "momentum": 0,
+            "dampening": 0,
+            "weight_decay": 0,
+            "nesterov": false
+        }
+    },
+    "Accuracy": {
+        "pytorch_name": "torchmetrics.Accuracy",
+        "required_parameters": [
+            "task"
+        ],
+        "optional_parameters": {
+            "num_classes": null,
+            "average": "micro"
+        }
+    },
+    "F1Score": {
+        "pytorch_name": "torchmetrics.F1Score",
+        "required_parameters": [
+            "task"
+        ],
+        "optional_parameters": {
+            "num_classes": null,
+            "average": "micro"
+        }
+    },
+    "Precision": {
+        "pytorch_name": "torchmetrics.Precision",
+        "required_parameters": [
+            "task"
+        ],
+        "optional_parameters": {
+            "num_classes": null,
+            "average": "micro"
+        }
+    },
+    "Recall": {
+        "pytorch_name": "torchmetrics.Recall",
+        "required_parameters": [
+            "task"
+        ],
+        "optional_parameters": {
+            "num_classes": null,
+            "average": "micro"
+        }
+    },
+    "MeanAbsoluteError": {
+        "pytorch_name": "torchmetrics.MeanAbsoluteError",
+        "required_parameters": [],
+        "optional_parameters": {}
+    },
+    "MeanSquaredError": {
+        "pytorch_name": "torchmetrics.MeanSquaredError",
+        "required_parameters": [],
+        "optional_parameters": {
+            "squared": true
+        }
+    }
+}

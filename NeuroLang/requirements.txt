@@ -1,0 +1,18 @@
+# Biblioteki wymagane do kompilatora NeuroLang
+lark>=1.1.0
+tqdm>=4.65.0
+pandas>=2.0.0
+
+# Deep Learning i Pytorch
+torch>=2.0.0
+torchvision>=0.15.0
+torchmetrics>=0.11.0
+
+# Wizualizacja architektury
+# Wymaga systemowej instalacji Graphviz (np. brew install graphviz na macOS)
+torchview>=0.2.6
+
+# Testowanie
+pytest>=7.0.0
+
+# Dla modyfikujących kod źródłowy: isort i ruff

@@ -1,0 +1,20 @@
+# Pliki binarne i pamięć podręczna Pythona
+__pycache__/
+
+# Cache narzędzi testowych
+.pytest_cache/
+
+# Ruff
+.ruff_cache/
+
+# Wyniki działania kompilatora i wagi modeli
+*.pth
+model_*.pth
+generated_script.py
+model_graph.png
+model_graph
+
+# Dane treningowe i zbiory danych
+data/
+!data/sample_data.csv
+
