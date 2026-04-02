@@ -15,6 +15,6 @@ model_graph.png
 model_graph
 
 # Dane treningowe i zbiory danych
-data/
-!data/sample_data.csv
+/data/*
+!/data/sample_data.csv
 
