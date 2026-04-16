@@ -1,4 +1,3 @@
-# err_undefined_config.nl
 # Przykład błędu: Użycie niezdefiniowanej konfiguracji w komendzie train
 
 network MyNet {
