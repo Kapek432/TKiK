@@ -12,7 +12,7 @@ DEFAULT_INPUT = "examples/01_mnist_basic.nl"
 DEFAULT_OUTPUT = "generated_script.py"
 MODEL_GRAPH_FILE = "model_graph.png"
 MODEL_GRAPH_BASENAME = "model_graph"
-SOURCE_FILE_EXAMPLE = "examples/example.nl"
+SOURCE_FILE_EXAMPLE = "examples/01_mnist_basic.nl"
 
 # Ustawienia domyślne architektury
 DEFAULT_IMAGE_SIZE = 28

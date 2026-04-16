@@ -8,6 +8,12 @@ instruction: var_decl
            | load_model_cmd
            | train_cmd
            | save_cmd
+           | evaluate_cmd
+           | print_cmd
+           | export_cmd
+           | predict_cmd
+           | summary_cmd
+           | if_block
 
 // Deklaracje zmiennych
 var_decl: "let" CNAME "=" math_expr [","]
@@ -41,12 +47,38 @@ list_expr: "[" [config_value ("," config_value)*] "]"
 // Komenda trenowania modelu
 train_cmd: "train" CNAME "with" CNAME "on" CNAME ["using" device_type]
 
-// Dozwolone wartości dla device_type, ! oznacza, że device_type jest terminalem, a nie regułą, 
-// co pozwala na bezpośrednie użycie tych słów kluczowych bez konieczności definiowania ich jako osobnych reguł
+// Dozwolone wartości dla device_type
 !device_type: "cpu" | "gpu" | "cuda" | "mps"
 
 // Komenda zapisywania modelu
 save_cmd: "save" CNAME "to" ESCAPED_STRING
+
+// Ewaluacja modelu na zbiorze danych
+evaluate_cmd: "evaluate" CNAME "on" CNAME
+
+// Instrukcja wypisywania
+print_cmd: "print" print_arg
+print_arg: ESCAPED_STRING -> print_string
+         | "summary" CNAME -> print_summary
+         | math_expr -> print_expr
+
+// Eksport modelu do pliku ONNX
+export_cmd: "export" CNAME "to" ESCAPED_STRING
+
+// Predykcja na danych
+predict_cmd: "predict" CNAME "on" (CNAME | ESCAPED_STRING)
+
+// Podsumowanie architektury modelu
+summary_cmd: "summary" CNAME
+
+// Blok warunkowy z opcjonalnym else if / else
+if_block: "if" condition "{" instruction+ "}" elif_clause* [else_clause]
+elif_clause: "else" "if" condition "{" instruction+ "}"
+else_clause: "else" "{" instruction+ "}"
+condition: "gpu_available" -> cond_gpu
+         | "mps_available" -> cond_mps
+         | "has_data" -> cond_has_data
+         | CNAME -> cond_var
 
 // Wywołania funkcji
 call: CNAME "(" [arguments] ")"

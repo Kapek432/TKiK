@@ -11,15 +11,14 @@
 ## Założenia programu 
 
 ### Opis programu
-NeuroLang to specjalistyczny język programowania zaprojektowany w celu uproszczenia procesu definiowania, trenowania i zarządzania architekturami głębokich sieci neuronowych. Język pozwala na deklaratywne opisywanie struktur warstwowych, konfigurowanie parametrów uczenia oraz zarządzanie zbiorami danych w sposób czytelny i zwięzły, eliminując powtarzalny kod typowy dla bibliotek takich jak PyTorch czy TensorFlow.
+NeuroLang to specjalistyczny język programowania zaprojektowany w celu uproszczenia procesu definiowania, trenowania i zarządzania architekturami głębokich sieci neuronowych. Język pozwala na deklaratywne opisywanie struktur warstwowych, konfigurowanie parametrów uczenia oraz zarządzanie pełnym potokiem operacji na danych (od wczytywania, przez uczenie i warunkowe kroki sterujące, po ewaluację, predykcję i eksport) w sposób czytelny i zwięzły, eliminując powtarzalny kod typowy dla bibliotek takich jak PyTorch czy TensorFlow.
 
 ### Cele programu
-- Umożliwienie szybkiego definiowania i trenowania modeli sieci neuronowych bez konieczności pisania rozbudowanego kodu w Pythonie.
-- Obsługa wbudowanych datasetów a także plików w formacie `.csv`.
-- Automatyzacja wyliczania wymiarów warstw (shape inference), zwłaszcza przy sieciach konwolucyjnych i spłaszczaniu tensorów.
-- Zapewnienie czytelnej składni dla pętli powtarzających bloki warstw (`repeat`).
-- Walidacja semantyczna modelu przed uruchomieniem (np. sprawdzanie poprawności parametrów dropout czy zgodności wymiarowej).
-- Zapisywanie wynikowego modelu do pliku `.py` oraz opcjonalne uruchamianie go bezpośrednio z poziomu kompilatora wraz z wizualizacją architektury.
+- Umożliwienie szybkiego prototypowania modeli wizyjnych (CNN) i tablicowych (MLP) wraz z pełnymi potokami ekstrakcyjro-trenującymi.
+- Automatyzacja wyliczania wymiarów warstw, zwłaszcza przy sieciach konwolucyjnych i spłaszczaniu tensorów, chroniąca przed niepoprawnymi rozmiarami danych.
+- Zapewnienie czytelnej składni dla pętli powtarzających bloki warstw (`repeat`) oraz dynamicznego zarządzania przepływem wykorzystując bloki warunkowe (`if`, `else if`, `else`).
+- Wprowadzenie obsługi deklaracji i ewaluacji zmiennych do zagnieżdżania wewnątrz konfiguracji
+- Rygorystyczna walidacja semantyczna modelu przed wdrożeniem i tłumaczeniem (z uwzględnieniem sprawdzania poprawności parametrów, dzielenia przez zero, ponownych definicji z tym samym identyfikatorem oraz dokładną diagnostyką obejmującą weryfikację ilości klas we wbudowanych metrykach).
 
 ### Rodzaj translatora
 NeuroLang jest **kompilatorem (transpilatorem)** kodu NeuroLang do wykonywalnego skryptu w języku **Python**, wykorzystującego bibliotekę **PyTorch**. Wynikiem działania programu jest gotowy do uruchomienia plik `.py`, który zawiera definicję klasy modelu, ładowanie danych oraz kompletną pętlę treningową.
@@ -49,6 +48,15 @@ Skaner języka NeuroLang rozpoznaje następujące grupy tokenów:
 | `FROM` | `from` | Ścieżka źródłowa dla modeli |
 | `TO` | `to` | Ścieżka zapisu dla modeli |
 | `AS` | `as` | Alias dla zbiorów danych lub modeli |
+| `EVALUATE` | `evaluate` | Komenda ewaluacji modelu na zbiorze danych |
+| `PRINT` | `print` | Instrukcja wypisywania informacji |
+| `SUMMARY` | `summary` | Wyświetlenie podsumowania architektury sieci |
+| `EXPORT` | `export` | Eksport modelu do formatu ONNX |
+| `PREDICT` | `predict` | Komenda predykcji na danych |
+| `IF` | `if` | Rozpoczęcie bloku warunkowego |
+| `GPU_AVAILABLE` | `gpu_available` | Warunek dostępności GPU (CUDA) |
+| `MPS_AVAILABLE` | `mps_available` | Warunek dostępności MPS (Apple Silicon) |
+| `HAS_DATA` | `has_data` | Warunek sprawdzenia czy dane są wczytane |
 | `NUMBER` | `[0-9]+` | Literały liczbowe (całkowite i zmiennoprzecinkowe) |
 | `CNAME` | `[a-zA-Z_][a-zA-Z0-9_]*` | Nazwy zmiennych, sieci i komponentów |
 | `ESCAPED_STRING` | `"[^"]*"` | Napisy w cudzysłowach (np. ścieżki do plików) |
@@ -75,6 +83,12 @@ instruction: var_decl
            | load_model_cmd
            | train_cmd
            | save_cmd
+           | evaluate_cmd
+           | print_cmd
+           | export_cmd
+           | predict_cmd
+           | summary_cmd
+           | if_block
 
 var_decl: "let" CNAME "=" math_expr [","]
 var_assign: CNAME "=" math_expr [","]
@@ -104,6 +118,27 @@ train_cmd: "train" CNAME "with" CNAME "on" CNAME ["using" device_type]
 !device_type: "cpu" | "gpu" | "cuda" | "mps"
 
 save_cmd: "save" CNAME "to" ESCAPED_STRING
+
+evaluate_cmd: "evaluate" CNAME "on" CNAME
+
+print_cmd: "print" print_arg
+print_arg: ESCAPED_STRING -> print_string
+         | "summary" CNAME -> print_summary
+         | math_expr -> print_expr
+
+export_cmd: "export" CNAME "to" ESCAPED_STRING
+
+predict_cmd: "predict" CNAME "on" (CNAME | ESCAPED_STRING)
+
+summary_cmd: "summary" CNAME
+
+if_block: "if" condition "{" instruction+ "}" elif_clause* [else_clause]
+elif_clause: "else" "if" condition "{" instruction+ "}"
+else_clause: "else" "{" instruction+ "}"
+condition: "gpu_available" -> cond_gpu
+         | "mps_available" -> cond_mps
+         | "has_data" -> cond_has_data
+         | CNAME -> cond_var
 
 call: CNAME "(" [arguments] ")"
 arguments: arg ("," arg)*

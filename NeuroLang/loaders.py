@@ -18,7 +18,7 @@ def load_text_file(filepath: str) -> str:
         - str: Zawartość pliku tekstowego.
     """
     if not os.path.exists(filepath):
-        raise FileNotFoundError(f"Nie znaleziono pliku: {filepath}")
+        raise FileNotFoundError(f"File not found: {filepath}")
 
     with open(filepath, "r") as f:
         return f.read()
@@ -36,7 +36,7 @@ def load_json_file(filepath: str) -> dict:
         - dict: Zawartość pliku JSON jako słownik.
     """
     if not os.path.exists(filepath):
-        raise FileNotFoundError(f"Nie znaleziono pliku: {filepath}")
+        raise FileNotFoundError(f"File not found: {filepath}")
 
     with open(filepath, "r") as f:
         return json.load(f)
