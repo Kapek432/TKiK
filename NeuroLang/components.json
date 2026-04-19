@@ -164,6 +164,11 @@
         "required_parameters": [],
         "optional_parameters": {}
     },
+    "BCEWithLogitsLoss": {
+        "pytorch_name": "torch.nn.BCEWithLogitsLoss",
+        "required_parameters": [],
+        "optional_parameters": {}
+    },
     "Adam": {
         "pytorch_name": "torch.optim.Adam",
         "required_parameters": [],

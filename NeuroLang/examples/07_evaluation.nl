@@ -12,6 +12,7 @@ load_data MNIST {
 
 train_config Cfg {
     epochs: 3,
+    task: "multiclass",
     optimizer: Adam(),
     loss_function: CrossEntropyLoss(),
     metrics: [Accuracy(task="multiclass", num_classes=10)]

@@ -19,6 +19,7 @@ network SimpleMLP(1, 28, 28) {
 train_config BasicConfig {
     epochs: 5,
     learning_rate: 0.001,
+    task: "multiclass",
     optimizer: Adam(),
     loss_function: CrossEntropyLoss(),
     metrics: [Accuracy(task="multiclass", num_classes=10)]

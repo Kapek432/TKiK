@@ -1,4 +1,4 @@
-# Pełny pipeline demonstrujący wszystkie nowe instrukcje
+# Pełny pipeline demonstrujący wszystkie instrukcje
 
 let num_classes = 10
 
@@ -24,6 +24,7 @@ load_data MNIST {
 
 train_config Cfg {
     epochs: 5,
+    task: "multiclass",
     optimizer: Adam(),
     loss_function: CrossEntropyLoss(),
     metrics: [Accuracy(task="multiclass", num_classes=10)]

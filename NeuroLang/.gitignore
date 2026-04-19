@@ -1,20 +1,34 @@
-# Pliki binarne i pamięć podręczna Pythona
+# Python
 __pycache__/
-
-# Cache narzędzi testowych
+*.pyc
+*.pyo
 .pytest_cache/
-
-# Ruff
 .ruff_cache/
+.mypy_cache/
 
-# Wyniki działania kompilatora i wagi modeli
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment variables
+.env
+.env.local
+
+# Data
+data/
 *.pth
-model_*.pth
+*.onnx
+model_graph.*
 generated_script.py
-model_graph.png
-model_graph
+examples/*.py
 
-# Dane treningowe i zbiory danych
-/data/*
-!/data/sample_data.csv
+# Build and distribution
+*.egg-info/
+build/
+dist/
+
+# macOS
+.DS_Store
+
 

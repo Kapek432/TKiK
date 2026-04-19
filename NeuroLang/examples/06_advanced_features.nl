@@ -25,6 +25,7 @@ load_data MNIST {
 train_config MyConfig {
     epochs: 5,
     learning_rate: 0.001,
+    task: "multiclass",
     optimizer: Adam(),
     metrics: [Accuracy(task="multiclass", num_classes=10)]
 }

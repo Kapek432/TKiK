@@ -18,6 +18,7 @@ let USE_FANCY_METRICS = 1
 train_config BasicConfig {
     epochs: 1,
     learning_rate: 0.01,
+    task: "multiclass",
     optimizer: Adam(),
     loss_function: CrossEntropyLoss(),
     metrics: [Accuracy(task="multiclass", num_classes=10)]

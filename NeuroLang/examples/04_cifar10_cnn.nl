@@ -24,6 +24,7 @@ load_data CIFAR10 {
 
 train_config CIFAR_Config {
     epochs: 5,
+    task: "multiclass",
     optimizer: Adam(),
     loss_function: CrossEntropyLoss(),
     metrics: [Accuracy(task="multiclass", num_classes=10)]

@@ -1,0 +1,55 @@
+paths:
+  grammar_file: neurolang.lark
+  components_file: components.json
+  datasets_file: datasets.json
+  default_input: examples/01_mnist_basic.nl
+  default_output: generated_script.py
+  model_graph_file: model_graph.png
+  model_graph_basename: model_graph
+  default_data_dir: ./data
+
+model:
+  default_image_size: 28
+  default_channels: 1
+  default_dropout_p: 0.5
+  default_momentum: 0.9
+
+training:
+  default_learning_rate: 0.001
+  default_epochs: 10
+  default_batch_size: 32
+
+logging:
+  level: INFO
+  format: "%(message)s"
+
+validation:
+  allowed_config_keys:
+    - epochs
+    - learning_rate
+    - batch_size
+    - task
+    - optimizer
+    - loss_function
+    - metrics
+    - shuffle
+    - target_type
+  binary_losses:
+    - BCELoss
+    - BCEWithLogitsLoss
+  regression_losses:
+    - MSELoss
+    - L1Loss
+    - SmoothL1Loss
+    - HuberLoss
+  metrics_with_num_classes:
+    - Accuracy
+    - F1Score
+    - Precision
+    - Recall
+  image_datasets:
+    - MNIST
+    - FashionMNIST
+    - CIFAR10
+    - CIFAR100
+    - SVHN

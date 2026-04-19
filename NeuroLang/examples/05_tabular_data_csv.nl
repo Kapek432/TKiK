@@ -14,6 +14,7 @@ network TabularNet {
 
 train_config CSV_Config {
     epochs: 10,
+    task: "multiclass",
     optimizer: Adam(lr=0.01),
     loss_function: CrossEntropyLoss(),
     metrics: [Accuracy(task="multiclass", num_classes=3)]

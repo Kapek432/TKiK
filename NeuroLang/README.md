@@ -57,7 +57,7 @@ Skaner języka NeuroLang rozpoznaje następujące grupy tokenów:
 | `GPU_AVAILABLE` | `gpu_available` | Warunek dostępności GPU (CUDA) |
 | `MPS_AVAILABLE` | `mps_available` | Warunek dostępności MPS (Apple Silicon) |
 | `HAS_DATA` | `has_data` | Warunek sprawdzenia czy dane są wczytane |
-| `NUMBER` | `[0-9]+` | Literały liczbowe (całkowite i zmiennoprzecinkowe) |
+| `NUMBER` | `\d+(\.\d+)?` | Literały liczbowe |
 | `CNAME` | `[a-zA-Z_][a-zA-Z0-9_]*` | Nazwy zmiennych, sieci i komponentów |
 | `ESCAPED_STRING` | `"[^"]*"` | Napisy w cudzysłowach (np. ścieżki do plików) |
 | `TRUE / FALSE` | `true / false` | Stałe logiczne |

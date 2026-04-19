@@ -22,6 +22,7 @@ load_data MNIST {
 
 train_config CNN_Config {
     epochs: 2,
+    task: "multiclass",
     optimizer: Adam(lr=0.001),
     loss_function: CrossEntropyLoss(),
     metrics: [Accuracy(task="multiclass", num_classes=10)]

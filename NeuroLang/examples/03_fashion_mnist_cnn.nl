@@ -15,6 +15,7 @@ load_data FashionMNIST {
 
 train_config FashionConfig {
     epochs: 1,
+    task: "multiclass",
     optimizer: Adam(lr=0.001),
     loss_function: CrossEntropyLoss(),
     metrics: [Accuracy(task="multiclass", num_classes=10)]
