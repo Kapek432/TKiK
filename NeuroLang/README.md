@@ -54,9 +54,13 @@ Skaner języka NeuroLang rozpoznaje następujące grupy tokenów:
 | `EXPORT` | `export` | Eksport modelu do formatu ONNX |
 | `PREDICT` | `predict` | Komenda predykcji na danych |
 | `IF` | `if` | Rozpoczęcie bloku warunkowego |
-| `GPU_AVAILABLE` | `gpu_available` | Warunek dostępności GPU (CUDA) |
-| `MPS_AVAILABLE` | `mps_available` | Warunek dostępności MPS (Apple Silicon) |
-| `HAS_DATA` | `has_data` | Warunek sprawdzenia czy dane są wczytane |
+| `GPU_AVAILABLE` | `gpu_available` | Predykat: dostępność GPU (CUDA) |
+| `MPS_AVAILABLE` | `mps_available` | Predykat: dostępność MPS (Apple Silicon) |
+| `HAS_DATA` | `has_data` | Predykat: wczytane dane |
+| `AND` | `and` | Koniunkcja logiczna w warunkach |
+| `OR` | `or` | Alternatywa logiczna w warunkach |
+| `NOT` | `not` | Negacja logiczna w warunkach |
+| `CMP_OP` | `==`, `!=`, `<`, `<=`, `>`, `>=` | Operatory porównania wyrażeń arytmetycznych |
 | `NUMBER` | `\d+(\.\d+)?` | Literały liczbowe |
 | `CNAME` | `[a-zA-Z_][a-zA-Z0-9_]*` | Nazwy zmiennych, sieci i komponentów |
 | `ESCAPED_STRING` | `"[^"]*"` | Napisy w cudzysłowach (np. ścieżki do plików) |
@@ -135,10 +139,21 @@ summary_cmd: "summary" CNAME
 if_block: "if" condition "{" instruction+ "}" elif_clause* [else_clause]
 elif_clause: "else" "if" condition "{" instruction+ "}"
 else_clause: "else" "{" instruction+ "}"
-condition: "gpu_available" -> cond_gpu
-         | "mps_available" -> cond_mps
-         | "has_data" -> cond_has_data
-         | CNAME -> cond_var
+
+condition: or_condition
+or_condition: and_condition ("or" and_condition)*
+and_condition: not_condition ("and" not_condition)*
+not_condition: "not" not_condition -> cond_not
+             | atom_condition
+atom_condition: "(" condition ")" -> cond_group
+              | "gpu_available" -> cond_gpu
+              | "mps_available" -> cond_mps
+              | "has_data" -> cond_has_data
+              | boolean -> cond_bool
+              | comparison
+comparison: math_expr CMP_OP math_expr -> cond_compare
+          | math_expr -> cond_math
+CMP_OP: "==" | "!=" | "<=" | ">=" | "<" | ">"
 
 call: CNAME "(" [arguments] ")"
 arguments: arg ("," arg)*
