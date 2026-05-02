@@ -16,7 +16,8 @@ env/
 .env.local
 
 # Data
-data/
+data/*
+!data/*.csv
 *.pth
 *.onnx
 model_graph.*
