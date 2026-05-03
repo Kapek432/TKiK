@@ -61,15 +61,6 @@ class CodeBuffer:
         """
         self.lines.append("    " * indent + line)
 
-    def extend(self, code: "CodeBuffer") -> None:
-        """
-        Kopiuje zawartość innego bufora.
-
-        Argumenty:
-            code (CodeBuffer): Bufor kodu
-        """
-        self.lines.extend(code.lines)
-
     def render(self) -> str:
         """
         Zwraca cały kod jako jeden tekst.

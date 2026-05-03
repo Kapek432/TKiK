@@ -45,8 +45,6 @@ def condition_code(condition: dict[str, Any], data_alias: Optional[str] = None) 
         return "True" if condition.get("value") else "False"
     if cond_type == "truthy":
         value = condition["value"]
-        if isinstance(value, bool):
-            return "True" if value else "False"
         return f"bool({_format_operand(value)})"
     if cond_type == "compare":
         op = condition["op"]
@@ -64,4 +62,4 @@ def condition_code(condition: dict[str, Any], data_alias: Optional[str] = None) 
     if cond_type == "or":
         parts = [condition_code(op, data_alias) for op in condition["operands"]]
         return "(" + " or ".join(parts) + ")"
-    return "True"
+    raise ValueError(f"Unsupported condition type: {cond_type}")

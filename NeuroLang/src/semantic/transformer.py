@@ -49,64 +49,6 @@ class NeuroLangCompiler(Transformer):
             "network_bindings": {},
         }
 
-    @property
-    def variables(self) -> dict[str, Any]:
-        """
-        Skrót do tablicy zmiennych w tabeli symboli.
-
-        Zwraca:
-            dict[str, Any]: Tablica zmiennych
-        """
-        return self.symbols.variables
-
-    @property
-    def defined_networks(self) -> set[str]:
-        """
-        Zbiór nazw zdefiniowanych sieci.
-
-        Zwraca:
-            set[str]: Zbiór nazw zdefiniowanych sieci
-        """
-        return self.symbols.defined_networks
-
-    @property
-    def defined_configs(self) -> set[str]:
-        """
-        Zbiór nazw zdefiniowanych konfiguracji.
-
-        Zwraca:
-            set[str]: Zbiór nazw zdefiniowanych konfiguracji
-        """
-        return self.symbols.defined_configs
-
-    @property
-    def defined_data(self) -> set[str]:
-        """
-        Zbiór aliasów zdefiniowanych źródeł danych.
-
-        Zwraca:
-            set[str]: Zbiór aliasów zdefiniowanych źródeł danych
-        """
-        return self.symbols.defined_data
-
-    @property
-    def parsed_network(self) -> dict[str, Any]:
-        """
-        Zwraca ostatnio przetworzoną sieć.
-
-        Zwraca:
-            dict[str, Any]: Ostatnio przetworzony rekord sieci
-        """
-        if not self.parsed_networks:
-            return {"name": "", "layers": [], "last_output": None, "first_input": None}
-
-        for instr in self.parsed_config.get("instructions", []):
-            instr_net = instr.get("network")
-            if isinstance(instr_net, str) and instr_net in self.parsed_networks:
-                return self.parsed_networks[instr_net]
-
-        return next(reversed(self.parsed_networks.values()))
-
     @v_args(inline=True)
     def NUMBER(self, token: Token) -> float | int:
         """
@@ -519,10 +461,8 @@ class NeuroLangCompiler(Transformer):
                 layers.append(stmt)
 
         ctx = self.symbols.context_for(name)
-        self.symbols.enter_network(name)
         for layer in layers:
             self._apply_shape_inference(ctx, layer)
-        self.symbols.leave_network()
 
         self.parsed_networks[name] = {
             "name": name,
@@ -561,7 +501,6 @@ class NeuroLangCompiler(Transformer):
             "alias": alias,
             "params": params,
         }
-        self.parsed_config["data"] = self.parsed_config["data_sources"][alias]
         self.symbols.defined_data.add(alias)
 
     @v_args(inline=True, meta=True)
@@ -588,7 +527,6 @@ class NeuroLangCompiler(Transformer):
             cfg.update(item)
         validate_config_block(cfg, name, meta.line, meta.column, config=self.config)
         self.parsed_config.setdefault("configs", {})[name] = {"name": name, "params": cfg}
-        self.parsed_config["training"] = {"name": name, "params": cfg}
         self.symbols.defined_configs.add(name)
 
     @v_args(inline=True)
@@ -634,7 +572,7 @@ class NeuroLangCompiler(Transformer):
         network_entry = self.parsed_networks.get(net, {})
         last_out = network_entry.get("last_output")
         configs = self.parsed_config.get("configs", {})
-        training_params = configs.get(cfg, self.parsed_config.get("training", {})).get("params", {})
+        training_params = configs.get(cfg, {}).get("params", {})
         task = training_params.get("task", "multiclass")
         metrics = training_params.get("metrics", [])
         for metric in metrics:

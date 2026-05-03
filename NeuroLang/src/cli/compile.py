@@ -118,7 +118,6 @@ def main() -> None:
 
     logger.info("Code generation...")
     generator = PyTorchGenerator(
-        parsed_network=compiler.parsed_network,
         parsed_config=compiler.parsed_config,
         components=compiler.components,
         visualize=args.visualize,

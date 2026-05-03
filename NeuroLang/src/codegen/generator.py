@@ -28,7 +28,6 @@ class PyTorchGenerator:
 
     def __init__(
         self,
-        parsed_network: dict[str, Any],
         parsed_config: dict[str, Any],
         components: dict[str, Any],
         visualize: bool = False,
@@ -38,13 +37,11 @@ class PyTorchGenerator:
         Tworzy instancję generatora kodu PyTorch.
 
         Argumenty:
-            parsed_network (dict[str, Any]): Opis sieci
-            parsed_config (dict[str, Any]): Słownik konfiguracji (data/training/instructions)
+            parsed_config (dict[str, Any]): Słownik konfiguracji (networks/configs/data_sources/instructions)
             components (dict[str, Any]): Mapowanie komponentów NeuroLang -> PyTorch
             visualize (bool): Czy dołączyć kod wizualizacji
             config (Optional[Config]): Konfiguracja projektu
         """
-        self.network = parsed_network or {}
         self.config_dict = parsed_config or {}
         self.components = components or {}
         self.visualize = visualize
@@ -81,12 +78,7 @@ class PyTorchGenerator:
         Zwraca:
             str: Kompletny skrypt PyTorch
         """
-        data_cfg = self.config_dict.get("data")
-        self.data_alias = data_cfg["alias"] if data_cfg else None
-
         defined_aliases: list[str] = list(self.config_dict.get("data_sources", {}).keys())
-        if not defined_aliases and self.data_alias:
-            defined_aliases = [self.data_alias]
         if defined_aliases:
             self.data_alias = defined_aliases[0]
 
@@ -102,14 +94,9 @@ class PyTorchGenerator:
             defined_aliases,
             initialize_aliases=True,
         )
-        if self.networks:
-            for network in self.networks.values():
-                generate_model_class(self.buffer, network, self.components)
-            generate_model_instantiations(self.buffer, self.networks)
-        else:
-            generate_model_class(self.buffer, self.network, self.components)
-            fallback_name = self.network.get("name", "model")
-            generate_model_instantiations(self.buffer, {fallback_name: self.network})
+        for network in self.networks.values():
+            generate_model_class(self.buffer, network, self.components)
+        generate_model_instantiations(self.buffer, self.networks)
 
         for instr in self.config_dict.get("instructions", []):
             self._generate_instruction(instr, indent=0)
@@ -198,8 +185,7 @@ class PyTorchGenerator:
         configs = self.config_dict.get("configs", {})
         if isinstance(cfg_name, str) and cfg_name in configs:
             return configs[cfg_name]
-
-        return self.config_dict.get("training", {})
+        return {}
 
     def _resolve_network(self, instr: dict[str, Any]) -> dict[str, Any]:
         """
@@ -213,11 +199,8 @@ class PyTorchGenerator:
         """
         net_name = instr.get("network")
         if isinstance(net_name, str):
-            if net_name in self.networks:
-                return self.networks[net_name]
-            if self.network.get("name") == net_name:
-                return self.network
-        return self.network
+            return self.networks.get(net_name, {})
+        return {}
 
     def _resolve_model_var(self, instr: dict[str, Any]) -> str:
         """
@@ -310,20 +293,14 @@ class PyTorchGenerator:
     def _generate_visualization_code(self) -> None:
         """
         Dodaje kod generujący graf architektury przez torchview.
-        
-        Argumenty:
-            self (PyTorchGenerator): Instancja generatora
         """
-        if not self.network:
+        if not self.networks:
             return
-        first_input = self.network.get("first_input") or (1, 1, 28, 28)
+        first_network_name, first_network = next(iter(self.networks.items()))
+        first_input = first_network.get("first_input") or (1, 1, 28, 28)
         basename = str(self.config.paths.model_graph_basename)
         filename = str(self.config.paths.model_graph_file)
-        if self.networks:
-            first_network_name = next(iter(self.networks))
-            model_var = f"model_{first_network_name}" if len(self.networks) > 1 else f"model_{first_network_name}"
-        else:
-            model_var = "model"
+        model_var = "model" if len(self.networks) == 1 else f"model_{first_network_name}"
         self.buffer.add("try:")
         self.buffer.add(
             f"model_graph = draw_graph({model_var}, input_size={first_input}, "

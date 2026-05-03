@@ -24,6 +24,9 @@ model_graph.*
 generated_script.py
 examples/*.py
 
+# Personal output
+output/
+
 # Build and distribution
 *.egg-info/
 build/

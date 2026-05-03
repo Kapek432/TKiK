@@ -85,16 +85,6 @@ class Config:
         self.logging = _Section(raw.get("logging", {}))
         self.validation = _Section(raw.get("validation", {}))
 
-    @property
-    def project_root(self) -> str:
-        """
-        Zwraca katalog z plikiem konfiguracyjnym.
-
-        Zwraca:
-            str: Katalog z plikiem konfiguracyjnym
-        """
-        return self._project_root
-
     def resource(self, relative: str) -> str:
         """
         Zamienia ścieżkę względną do pliku konfiguracyjnego na absolutną.

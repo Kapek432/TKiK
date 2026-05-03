@@ -48,9 +48,6 @@ def generate_training_loop(
         model_var (str): Nazwa zmiennej modelu używanego do treningu
         indent (int): Poziom wcięcia
     """
-    if training_cfg.get("name") != instr["config"]:
-        return
-
     data_alias = instr["data"]
     params = training_cfg.get("params", {})
     task = resolve_task(params, config)
