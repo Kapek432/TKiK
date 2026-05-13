@@ -436,3 +436,24 @@ Centralna konfiguracja kompilatora (ścieżki domyślne, format logów, listy lo
 Pliki pomocnicze:
 - [`components.json`](components.json) - mapowanie warstw NeuroLang (`Dense`, `Conv2D`, `Adam`, `CrossEntropyLoss`, ...) na klasy/funkcje PyTorch.
 - [`datasets.json`](datasets.json) - metadane wbudowanych zbiorów `torchvision` (MNIST, CIFAR, ...).
+
+## Rozszerzenie VS Code / Cursor
+
+W katalogu [`vscode-extension/neurolang/`](vscode-extension/neurolang/) znajduje się dedykowane rozszerzenie zapewniające:
+
+- kolorowanie składni dla plików `.nl` (słowa kluczowe, komponenty wbudowane, predykaty, stringi, liczby, komentarze),
+- konfigurację języka (autodomykanie nawiasów, togglowanie komentarzy `#` skrótem `Cmd/Ctrl + /`),
+- snippety szkieletów (`nw` -> blok `network`, `cfg` -> `train_config`, `data` -> `load_data`, `tr` -> `train`, `ife`/`ifgpu` -> bloki warunkowe, `let`, `rep`, ...),
+- ikonę plików `.nl` w eksploratorze.
+
+Instalacja (kopia do katalogu rozszerzeń edytora):
+
+```bash
+cp -r vscode-extension/neurolang ~/.cursor/extensions/neurolang-0.1.0
+# lub dla VS Code:
+cp -r vscode-extension/neurolang ~/.vscode/extensions/neurolang-0.1.0
+```
+
+Następnie zrestartuj edytor (`Cmd+Shift+P` -> `Developer: Reload Window`).
+
+Szczegóły, inne metody instalacji (pakiet `.vsix`, tryb deweloperski `F5`) i pełna lista snippetów: [`vscode-extension/neurolang/README.md`](vscode-extension/neurolang/README.md).

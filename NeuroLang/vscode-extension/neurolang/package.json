@@ -1,0 +1,56 @@
+{
+    "name": "neurolang",
+    "displayName": "NeuroLang",
+    "description": "Syntax highlighting, language configuration and snippets for NeuroLang (.nl) files.",
+    "version": "0.1.0",
+    "publisher": "agh-tkik",
+    "license": "MIT",
+    "engines": {
+        "vscode": "^1.75.0"
+    },
+    "categories": [
+        "Programming Languages",
+        "Snippets"
+    ],
+    "keywords": [
+        "neurolang",
+        "neural network",
+        "pytorch",
+        "dsl",
+        "compiler",
+        "agh",
+        "tkik"
+    ],
+    "contributes": {
+        "languages": [
+            {
+                "id": "neurolang",
+                "aliases": [
+                    "NeuroLang",
+                    "neurolang"
+                ],
+                "extensions": [
+                    ".nl"
+                ],
+                "configuration": "./language-configuration.json",
+                "icon": {
+                    "light": "./icons/nl-file-icon.svg",
+                    "dark": "./icons/nl-file-icon.svg"
+                }
+            }
+        ],
+        "grammars": [
+            {
+                "language": "neurolang",
+                "scopeName": "source.neurolang",
+                "path": "./syntaxes/neurolang.tmLanguage.json"
+            }
+        ],
+        "snippets": [
+            {
+                "language": "neurolang",
+                "path": "./snippets/neurolang.code-snippets"
+            }
+        ]
+    }
+}

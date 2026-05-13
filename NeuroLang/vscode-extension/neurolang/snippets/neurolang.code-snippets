@@ -1,0 +1,130 @@
+{
+    "Network block": {
+        "prefix": "nw",
+        "description": "Definicja sieci NeuroLang (network)",
+        "body": [
+            "network ${1:NazwaSieci}(${2:1}, ${3:28}, ${4:28}) {",
+            "\tlayer: ${5:Flatten()},",
+            "\tlayer: ${6:Dense(784, 128)},",
+            "\tlayer: ${7:ReLU()},",
+            "\tlayer: ${8:Dense(128, 10)}",
+            "}"
+        ]
+    },
+    "Train config block": {
+        "prefix": "cfg",
+        "description": "Definicja konfiguracji treningu (train_config)",
+        "body": [
+            "train_config ${1:NazwaConfig} {",
+            "\tepochs: ${2:5},",
+            "\tlearning_rate: ${3:0.001},",
+            "\ttask: \"${4|multiclass,binary,regression|}\",",
+            "\toptimizer: ${5:Adam()},",
+            "\tloss_function: ${6:CrossEntropyLoss()},",
+            "\tmetrics: [${7:Accuracy(task=\"multiclass\", num_classes=10)}]",
+            "}"
+        ]
+    },
+    "Load data block": {
+        "prefix": "data",
+        "description": "Wczytanie zbioru danych (load_data)",
+        "body": [
+            "load_data ${1|MNIST,FashionMNIST,CIFAR10,CIFAR100|} {",
+            "\tbatch_size: ${2:128},",
+            "\tshuffle: ${3|true,false|}",
+            "}"
+        ]
+    },
+    "Load data from CSV": {
+        "prefix": "datacsv",
+        "description": "Wczytanie danych z pliku CSV",
+        "body": [
+            "load_data \"${1:data/dataset.csv}\" as ${2:MyData} {",
+            "\tbatch_size: ${3:64},",
+            "\tshuffle: ${4|true,false|},",
+            "\ttarget_column: \"${5:label}\"",
+            "}"
+        ]
+    },
+    "Train command": {
+        "prefix": "tr",
+        "description": "Uruchomienie treningu",
+        "body": [
+            "train ${1:Net} with ${2:Cfg} on ${3:Data}"
+        ]
+    },
+    "If gpu_available": {
+        "prefix": "ifgpu",
+        "description": "Blok warunkowy: GPU dostępne",
+        "body": [
+            "if gpu_available {",
+            "\t${1:train Net with Cfg on Data using gpu}",
+            "} else {",
+            "\t${2:train Net with Cfg on Data using cpu}",
+            "}"
+        ]
+    },
+    "If else block": {
+        "prefix": "ife",
+        "description": "Blok warunkowy if / else",
+        "body": [
+            "if ${1:condition} {",
+            "\t${2:# then}",
+            "} else {",
+            "\t${3:# else}",
+            "}"
+        ]
+    },
+    "Let variable": {
+        "prefix": "let",
+        "description": "Deklaracja zmiennej",
+        "body": [
+            "let ${1:nazwa} = ${2:wartosc}"
+        ]
+    },
+    "Repeat block": {
+        "prefix": "rep",
+        "description": "Pętla powtarzająca warstwy (repeat)",
+        "body": [
+            "repeat ${1:3} times {",
+            "\tlayer: ${2:Dense(128, 128)},",
+            "\tlayer: ${3:ReLU()}",
+            "}"
+        ]
+    },
+    "Evaluate": {
+        "prefix": "eval",
+        "description": "Ewaluacja modelu",
+        "body": [
+            "evaluate ${1:Net} on ${2:Data}"
+        ]
+    },
+    "Save model": {
+        "prefix": "save",
+        "description": "Zapis modelu do pliku",
+        "body": [
+            "save ${1:Net} to \"${2:model.pth}\""
+        ]
+    },
+    "Export to ONNX": {
+        "prefix": "exp",
+        "description": "Eksport modelu do ONNX",
+        "body": [
+            "export ${1:Net} to \"${2:model.onnx}\""
+        ]
+    },
+    "Predict": {
+        "prefix": "pred",
+        "description": "Predykcja na zbiorze danych",
+        "body": [
+            "predict ${1:Net} on ${2:Data}"
+        ]
+    },
+    "Summary": {
+        "prefix": "sum",
+        "description": "Podsumowanie architektury sieci",
+        "body": [
+            "summary ${1:Net}"
+        ]
+    }
+}
