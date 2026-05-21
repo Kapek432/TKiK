@@ -1,0 +1,147 @@
+{
+  "01_mnist_basic.nl": {
+    "title": "MNIST - prosty MLP",
+    "description": "Klasyczny potok: wczytanie MNIST, sieć MLP z Flatten i Dense, trening i zapis modelu.",
+    "tags": ["MNIST", "MLP", "klasyfikacja"]
+  },
+  "02_mnist_cnn.nl": {
+    "title": "MNIST - CNN",
+    "description": "Konwolucyjna sieć na MNIST: Conv2D, MaxPool2D, Flatten i warstwy gęste.",
+    "tags": ["MNIST", "CNN"]
+  },
+  "03_fashion_mnist_cnn.nl": {
+    "title": "Fashion-MNIST - CNN",
+    "description": "CNN trenowana na zbiorze Fashion-MNIST (ubrania).",
+    "tags": ["FashionMNIST", "CNN"]
+  },
+  "04_cifar10_cnn.nl": {
+    "title": "CIFAR-10 - CNN",
+    "description": "Głębsza sieć konwolucyjna dla kolorowych obrazów 32x32 (10 klas).",
+    "tags": ["CIFAR10", "CNN"]
+  },
+  "05_tabular_data_csv.nl": {
+    "title": "Dane CSV - MLP",
+    "description": "Wczytanie danych tabelarycznych z pliku CSV i prosta sieć MLP.",
+    "tags": ["CSV", "tabular"]
+  },
+  "06_advanced_features.nl": {
+    "title": "Zaawansowane: let i repeat",
+    "description": "Zmienne let oraz pętla repeat do wielokrotnego powielania bloków warstw.",
+    "tags": ["let", "repeat"]
+  },
+  "07_evaluation.nl": {
+    "title": "Ewaluacja modelu",
+    "description": "Trening sieci i osobna komenda evaluate na zbiorze danych.",
+    "tags": ["evaluate", "metryki"]
+  },
+  "08_full_pipeline.nl": {
+    "title": "Pełny potok",
+    "description": "Kompletny scenariusz: dane, sieć, config, train, save, export ONNX, predict.",
+    "tags": ["pipeline", "export", "predict"]
+  },
+  "09_if_statements.nl": {
+    "title": "Bloki warunkowe if/else",
+    "description": "Sterowanie przepływem: gpu_available, print, summary w gałęziach if.",
+    "tags": ["if", "gpu"]
+  },
+  "10_binary_classification_csv.nl": {
+    "title": "Klasyfikacja binarna (CSV)",
+    "description": "Dane z CSV, BCELoss i metryki dla zadania binary.",
+    "tags": ["CSV", "binary"]
+  },
+  "11_regression_csv.nl": {
+    "title": "Regresja (CSV)",
+    "description": "Przewidywanie wartości ciągłych - MSELoss i metryki regresji.",
+    "tags": ["CSV", "regression"]
+  },
+  "12_multiconfig_binding.nl": {
+    "title": "Wiele konfiguracji treningu",
+    "description": "Dwie sieci z różnymi train_config - wiązanie train z właściwym configiem.",
+    "tags": ["multiconfig"]
+  },
+  "13_two_networks_trainable.nl": {
+    "title": "Dwie sieci w jednym programie",
+    "description": "Definicja i trening dwóch niezależnych architektur w jednym pliku .nl.",
+    "tags": ["multi-network"]
+  },
+  "14_advanced_conditions.nl": {
+    "title": "Warunki logiczne",
+    "description": "Operatory and, or, not oraz grupowanie nawiasami w wyrażeniach warunkowych.",
+    "tags": ["if", "logic"]
+  },
+  "15_comparison_branching.nl": {
+    "title": "Porównania w warunkach",
+    "description": "Gałęzie if oparte na porównaniach liczbowych (==, !=, <, <=, >, >=).",
+    "tags": ["if", "comparison"]
+  },
+  "err_conv_shape.nl": {
+    "title": "Błąd: wymiary Conv2D",
+    "description": "Celowo zła sekwencja warstw konwolucyjnych - błąd shape inference.",
+    "tags": ["błąd", "Conv2D"]
+  },
+  "err_dense_mismatch.nl": {
+    "title": "Błąd: niezgodne Dense",
+    "description": "Dense z niepasującymi wymiarami wejścia/wyjścia między warstwami.",
+    "tags": ["błąd", "Dense"]
+  },
+  "err_div_zero.nl": {
+    "title": "Błąd: dzielenie przez zero",
+    "description": "Wyrażenie let z dzieleniem przez zero w analizie semantycznej.",
+    "tags": ["błąd", "let"]
+  },
+  "err_dropout_p.nl": {
+    "title": "Błąd: parametr Dropout",
+    "description": "Niepoprawna wartość p w Dropout (poza [0, 1]).",
+    "tags": ["błąd", "Dropout"]
+  },
+  "err_duplicate_config_key.nl": {
+    "title": "Błąd: duplikat klucza",
+    "description": "Ten sam klucz dwa razy w train_config (np. epochs).",
+    "tags": ["błąd", "config"]
+  },
+  "err_evaluate_unknown.nl": {
+    "title": "Błąd: nieznany zbiór",
+    "description": "evaluate odwołuje się do niezdefiniowanego źródła danych.",
+    "tags": ["błąd", "evaluate"]
+  },
+  "err_invalid_task.nl": {
+    "title": "Błąd: niezgodny task",
+    "description": "task regression z metryką klasyfikacyjną - konflikt semantyczny.",
+    "tags": ["błąd", "task"]
+  },
+  "err_maxpool_sequence.nl": {
+    "title": "Błąd: MaxPool2D",
+    "description": "Kolejność warstw prowadząca do ujemnego rozmiaru po pooling.",
+    "tags": ["błąd", "MaxPool2D"]
+  },
+  "err_metrics_mismatch.nl": {
+    "title": "Błąd: metryki vs wyjście",
+    "description": "Accuracy z liczbą klas niezgodną z wyjściem sieci.",
+    "tags": ["błąd", "metryki"]
+  },
+  "err_mixed_network_commands.nl": {
+    "title": "Błąd: mieszane komendy",
+    "description": "Niespójne odwołania do sieci i configów w komendach potoku.",
+    "tags": ["błąd"]
+  },
+  "err_redefinition.nl": {
+    "title": "Błąd: redeklaracja",
+    "description": "Dwukrotna definicja tej samej sieci lub zmiennej.",
+    "tags": ["błąd"]
+  },
+  "err_syntax.nl": {
+    "title": "Błąd składni",
+    "description": "Celowo uszkodzona składnia - test komunikatu parsera Lark.",
+    "tags": ["błąd", "składnia"]
+  },
+  "err_undefined_config.nl": {
+    "title": "Błąd: nieznany config",
+    "description": "train odwołuje się do nieistniejącego train_config.",
+    "tags": ["błąd"]
+  },
+  "err_undefined_if_cond.nl": {
+    "title": "Błąd: nieznany warunek",
+    "description": "Warunek if odwołuje się do niezdefiniowanej zmiennej.",
+    "tags": ["błąd", "if"]
+  }
+}

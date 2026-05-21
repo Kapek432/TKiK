@@ -31,6 +31,7 @@ output/
 *.egg-info/
 build/
 dist/
+web/frontend/node_modules/
 
 # macOS
 .DS_Store

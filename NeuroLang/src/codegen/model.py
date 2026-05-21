@@ -65,9 +65,7 @@ def generate_model_class(
     buffer.add("")
 
 
-def generate_model_instantiations(
-    buffer: CodeBuffer, networks: dict[str, dict[str, Any]]
-) -> None:
+def generate_model_instantiations(buffer: CodeBuffer, networks: dict[str, dict[str, Any]]) -> None:
     """
     Dodaje linie tworzące instancje modeli i przenoszące je na wybrane urządzenie.
 

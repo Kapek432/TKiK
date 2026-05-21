@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
+  background: #0f1117;
+  color: #e2e8f0;
+}
+
+.syntax-output pre,
+.syntax-output code,
+.syntax-output .linenumber,
+.syntax-output span[class*="token-line"] {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+.syntax-output pre {
+  white-space: pre-wrap !important;
+  word-break: break-word;
+}

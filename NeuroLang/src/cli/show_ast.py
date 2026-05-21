@@ -1,13 +1,13 @@
 """Wyświetlanie sformatowanego drzewa AST dla kodu NeuroLang."""
 
 import argparse
-
-from lark.exceptions import UnexpectedInput
+import os
+import sys
 
 from src import logger as log_setup
 from src.config import Config
 from src.loaders import load_text_file
-from src.parser.grammar import build_parser
+from src.services.compiler_service import parse_ast
 
 
 def _build_arg_parser(config: Config) -> argparse.ArgumentParser:
@@ -41,33 +41,30 @@ def main() -> None:
     args = _build_arg_parser(config).parse_args()
     logger.info("Initializing NeuroLang compiler...")
 
-    try:
-        parser = build_parser(config)
-        logger.info("Grammar loaded successfully.")
-    except Exception as exc:
-        logger.error(f"{exc}")
-        return
+    if not os.path.exists(args.input):
+        logger.error(f"ERROR: Input file not found: {args.input}")
+        sys.exit(1)
 
     try:
         source_code = load_text_file(args.input)
         logger.info(f"Source code '{args.input}' loaded successfully.")
     except Exception as exc:
         logger.error(f"{exc}")
-        return
+        sys.exit(1)
 
     logger.info("Building syntax tree...")
-    try:
-        ast_tree = parser.parse(source_code)
-    except UnexpectedInput as exc:
-        logger.error(f"SYNTAX ERROR at line {exc.line}, column {exc.column}")
-        logger.error(f"{exc.get_context(source_code)}")
-        logger.error(f"Expected one of: {exc.expected}")
-        return
+    result = parse_ast(source_code, config=config)
+
+    if not result.success:
+        logger.error(result.message)
+        if result.context:
+            logger.error(f"{result.context}")
+        sys.exit(1)
 
     logger.info("Syntax tree built successfully.")
     logger.info("Generated Syntax Tree:")
     logger.info("--------------------------------")
-    logger.info(f"{ast_tree.pretty()}")
+    logger.info(f"{result.ast_pretty}")
     logger.info("--------------------------------")
 
 

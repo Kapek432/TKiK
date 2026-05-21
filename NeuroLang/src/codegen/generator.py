@@ -64,16 +64,20 @@ class PyTorchGenerator:
     def add_line(self, line: str, indent: int = 0) -> None:
         """
         Dodaje linię do buforu.
-        
+
         Argumenty:
             line (str): Linia kodu
             indent (int): Poziom wcięcia
         """
         self.buffer.add(line, indent)
 
-    def generate(self) -> str:
+    def generate(self, graph_preview_only: bool = False) -> str:
         """
         Buduje kompletny skrypt PyTorch i zwraca go jako tekst.
+
+        Argumenty:
+            graph_preview_only (bool): Gdy True, generuje tylko model i kod
+                wizualizacji (bez danych i pętli treningowych) - do szybkiego podglądu grafu.
 
         Zwraca:
             str: Kompletny skrypt PyTorch
@@ -83,25 +87,30 @@ class PyTorchGenerator:
             self.data_alias = defined_aliases[0]
 
         device = resolve_train_device(self.config_dict)
+        include_viz = self.visualize or graph_preview_only
 
-        generate_imports(self.buffer, self.visualize)
+        generate_imports(self.buffer, include_viz)
         generate_device_config(self.buffer, device)
-        generate_data_loader(
-            self.buffer,
-            None,
-            {},
-            self.config,
-            defined_aliases,
-            initialize_aliases=True,
-        )
+
+        if not graph_preview_only:
+            generate_data_loader(
+                self.buffer,
+                None,
+                {},
+                self.config,
+                defined_aliases,
+                initialize_aliases=True,
+            )
+
         for network in self.networks.values():
             generate_model_class(self.buffer, network, self.components)
         generate_model_instantiations(self.buffer, self.networks)
 
-        for instr in self.config_dict.get("instructions", []):
-            self._generate_instruction(instr, indent=0)
+        if not graph_preview_only:
+            for instr in self.config_dict.get("instructions", []):
+                self._generate_instruction(instr, indent=0)
 
-        if self.visualize:
+        if include_viz:
             self._generate_visualization_code()
 
         return self.buffer.render()
@@ -109,7 +118,7 @@ class PyTorchGenerator:
     def _generate_instruction(self, instr: dict[str, Any], indent: int = 0) -> None:
         """
         Kieruje słownik instrukcji do właściwej funkcji generującej.
-        
+
         Argumenty:
             instr (dict[str, Any]): Słownik instrukcji
             indent (int): Poziom wcięcia
@@ -257,7 +266,7 @@ class PyTorchGenerator:
     def _generate_if_blocks(self, instr: dict[str, Any], indent: int = 0) -> None:
         """
         Rozwija blok warunkowy w kod if/elif/else Pythona.
-        
+
         Argumenty:
             instr (dict[str, Any]): Słownik instrukcji
             indent (int): Poziom wcięcia

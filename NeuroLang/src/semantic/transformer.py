@@ -942,9 +942,7 @@ class NeuroLangCompiler(Transformer):
         left, op_token, right = args
         op = str(op_token)
         if op not in {"==", "!=", "<", "<=", ">", ">="}:
-            raise ValueError(
-                f"SEMANTIC ERROR: Unsupported comparison operator '{op}'."
-            )
+            raise ValueError(f"SEMANTIC ERROR: Unsupported comparison operator '{op}'.")
         for side in (left, right):
             if not isinstance(side, (int, float, bool)):
                 raise ValueError(

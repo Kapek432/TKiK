@@ -10,7 +10,7 @@ from src.config import Config
 def _format_call_args(args: list[dict[str, Any]]) -> str:
     """
     Formatuje argumenty wywołania.
-    
+
     Argumenty:
         args (list[dict[str, Any]]): Lista argumentów
 

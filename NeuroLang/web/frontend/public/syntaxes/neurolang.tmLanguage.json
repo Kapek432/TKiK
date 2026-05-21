@@ -1,0 +1,163 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "NeuroLang",
+    "scopeName": "source.neurolang",
+    "fileTypes": ["nl"],
+    "patterns": [
+        { "include": "#comments" },
+        { "include": "#strings" },
+        { "include": "#numbers" },
+        { "include": "#booleans" },
+        { "include": "#predicates" },
+        { "include": "#devices" },
+        { "include": "#declaration-keywords" },
+        { "include": "#control-keywords" },
+        { "include": "#logical-operators" },
+        { "include": "#builtin-functions" },
+        { "include": "#generic-call" },
+        { "include": "#named-argument" },
+        { "include": "#comparison-operators" },
+        { "include": "#arithmetic-operators" },
+        { "include": "#assignment-operator" },
+        { "include": "#identifiers" }
+    ],
+    "repository": {
+        "comments": {
+            "patterns": [
+                {
+                    "name": "comment.line.number-sign.neurolang",
+                    "match": "#.*$"
+                }
+            ]
+        },
+        "strings": {
+            "patterns": [
+                {
+                    "name": "string.quoted.double.neurolang",
+                    "begin": "\"",
+                    "end": "\"",
+                    "patterns": [
+                        {
+                            "name": "constant.character.escape.neurolang",
+                            "match": "\\\\."
+                        }
+                    ]
+                }
+            ]
+        },
+        "numbers": {
+            "patterns": [
+                {
+                    "name": "constant.numeric.neurolang",
+                    "match": "\\b\\d+(\\.\\d+)?\\b"
+                }
+            ]
+        },
+        "booleans": {
+            "patterns": [
+                {
+                    "name": "constant.language.boolean.neurolang",
+                    "match": "\\b(true|false)\\b"
+                }
+            ]
+        },
+        "predicates": {
+            "patterns": [
+                {
+                    "name": "constant.language.predicate.neurolang",
+                    "match": "\\b(gpu_available|mps_available|has_data)\\b"
+                }
+            ]
+        },
+        "devices": {
+            "patterns": [
+                {
+                    "name": "constant.language.device.neurolang",
+                    "match": "(?<=\\busing\\s)(cpu|gpu|cuda|mps)\\b"
+                }
+            ]
+        },
+        "declaration-keywords": {
+            "patterns": [
+                {
+                    "name": "keyword.declaration.neurolang",
+                    "match": "\\b(let|network|layer|train_config|repeat|load_data|load_model)\\b"
+                }
+            ]
+        },
+        "control-keywords": {
+            "patterns": [
+                {
+                    "name": "keyword.control.neurolang",
+                    "match": "\\b(if|else|train|evaluate|predict|save|export|print|summary|with|on|using|from|to|as|times)\\b"
+                }
+            ]
+        },
+        "logical-operators": {
+            "patterns": [
+                {
+                    "name": "keyword.operator.logical.neurolang",
+                    "match": "\\b(and|or|not)\\b"
+                }
+            ]
+        },
+        "builtin-functions": {
+            "patterns": [
+                {
+                    "name": "support.function.builtin.neurolang",
+                    "match": "\\b(Dense|Conv1D|Conv2D|MaxPool1D|MaxPool2D|AvgPool2D|ReLU|LeakyReLU|Sigmoid|Tanh|Softmax|Dropout|BatchNorm1D|BatchNorm2D|LayerNorm|Flatten|CrossEntropyLoss|MSELoss|BCELoss|BCEWithLogitsLoss|Adam|SGD|Accuracy|F1Score|Precision|Recall|MeanAbsoluteError|MeanSquaredError)\\b(?=\\s*\\()"
+                }
+            ]
+        },
+        "generic-call": {
+            "patterns": [
+                {
+                    "name": "entity.name.function.neurolang",
+                    "match": "\\b[A-Z][A-Za-z0-9_]*(?=\\s*\\()"
+                }
+            ]
+        },
+        "named-argument": {
+            "patterns": [
+                {
+                    "match": "\\b([a-z_][a-zA-Z0-9_]*)\\s*(?==(?!=))",
+                    "captures": {
+                        "1": { "name": "variable.parameter.neurolang" }
+                    }
+                }
+            ]
+        },
+        "comparison-operators": {
+            "patterns": [
+                {
+                    "name": "keyword.operator.comparison.neurolang",
+                    "match": "==|!=|<=|>=|<|>"
+                }
+            ]
+        },
+        "arithmetic-operators": {
+            "patterns": [
+                {
+                    "name": "keyword.operator.arithmetic.neurolang",
+                    "match": "//|\\+|-|\\*|/"
+                }
+            ]
+        },
+        "assignment-operator": {
+            "patterns": [
+                {
+                    "name": "keyword.operator.assignment.neurolang",
+                    "match": "="
+                }
+            ]
+        },
+        "identifiers": {
+            "patterns": [
+                {
+                    "name": "variable.other.neurolang",
+                    "match": "\\b[a-zA-Z_][a-zA-Z0-9_]*\\b"
+                }
+            ]
+        }
+    }
+}

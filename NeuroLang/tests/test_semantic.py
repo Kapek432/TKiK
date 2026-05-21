@@ -514,9 +514,7 @@ def test_invalid_task_value(parser: Lark, compiler: NeuroLangCompiler) -> None:
 
 
 @pytest.mark.parametrize("task_value", ["multiclass", "binary", "regression"])
-def test_valid_task_values(
-    parser: Lark, compiler: NeuroLangCompiler, task_value: str
-) -> None:
+def test_valid_task_values(parser: Lark, compiler: NeuroLangCompiler, task_value: str) -> None:
     """
     Dozwolone wartości klucza task przechodzą walidację semantyczną.
 
@@ -660,9 +658,7 @@ def test_train_uses_referenced_config(parser: Lark, compiler: NeuroLangCompiler)
     _run(parser, compiler, code)
 
 
-def test_evaluate_predict_inherit_bound_config(
-    parser: Lark, compiler: NeuroLangCompiler
-) -> None:
+def test_evaluate_predict_inherit_bound_config(parser: Lark, compiler: NeuroLangCompiler) -> None:
     """
     evaluate/predict dziedziczą konfigurację powiązaną z wcześniejszym train dla tej samej sieci.
 
@@ -685,8 +681,12 @@ def test_evaluate_predict_inherit_bound_config(
     """
     _run(parser, compiler, code)
 
-    eval_instr = next(i for i in compiler.parsed_config["instructions"] if i["cmd_type"] == "evaluate")
-    pred_instr = next(i for i in compiler.parsed_config["instructions"] if i["cmd_type"] == "predict")
+    eval_instr = next(
+        i for i in compiler.parsed_config["instructions"] if i["cmd_type"] == "evaluate"
+    )
+    pred_instr = next(
+        i for i in compiler.parsed_config["instructions"] if i["cmd_type"] == "predict"
+    )
     assert eval_instr.get("config") == "CfgA", (
         f"Expected evaluate config CfgA, got {eval_instr.get('config')}"
     )

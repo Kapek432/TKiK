@@ -75,9 +75,7 @@ def test_mnist_loading_generation():
     config = _config(
         networks={"Simple": {"name": "Simple", "layers": []}},
         configs={"Cfg": {"name": "Cfg", "params": {}}},
-        data_sources={
-            "MNIST": {"source": "MNIST", "alias": "MNIST", "params": {"batch_size": 32}}
-        },
+        data_sources={"MNIST": {"source": "MNIST", "alias": "MNIST", "params": {"batch_size": 32}}},
         instructions=[
             {
                 "cmd_type": "train",
@@ -202,9 +200,7 @@ def test_evaluate_generation():
     config = _config(
         networks={"Net": {"name": "Net", "layers": [], "first_input": (1, 784)}},
         configs={"Cfg": {"name": "Cfg", "params": {"metrics": []}}},
-        instructions=[
-            {"cmd_type": "evaluate", "network": "Net", "config": "Cfg", "data": "MNIST"}
-        ],
+        instructions=[{"cmd_type": "evaluate", "network": "Net", "config": "Cfg", "data": "MNIST"}],
     )
     gen = PyTorchGenerator(config, {})
     code = gen.generate()
@@ -650,17 +646,17 @@ def test_condition_bool_false_generates_false_literal():
 def test_condition_not_generates_negation():
     """'not gpu_available' tlumaczy sie na '(not torch.cuda.is_available())'."""
     code = _cond_gen_code({"type": "not", "operand": {"type": "gpu_available"}})
-    assert "(not torch.cuda.is_available())" in code, (
-        f"Expected negation in code: {code}"
-    )
+    assert "(not torch.cuda.is_available())" in code, f"Expected negation in code: {code}"
 
 
 def test_condition_and_generates_conjunction():
     """'gpu_available and mps_available' tworzy koniunkcje."""
-    code = _cond_gen_code({
-        "type": "and",
-        "operands": [{"type": "gpu_available"}, {"type": "mps_available"}],
-    })
+    code = _cond_gen_code(
+        {
+            "type": "and",
+            "operands": [{"type": "gpu_available"}, {"type": "mps_available"}],
+        }
+    )
     assert "torch.cuda.is_available()" in code
     assert "torch.backends.mps.is_available()" in code
     assert " and " in code.split("if ")[1]
@@ -668,10 +664,12 @@ def test_condition_and_generates_conjunction():
 
 def test_condition_or_generates_disjunction():
     """'gpu_available or mps_available' tworzy alternatywe."""
-    code = _cond_gen_code({
-        "type": "or",
-        "operands": [{"type": "gpu_available"}, {"type": "mps_available"}],
-    })
+    code = _cond_gen_code(
+        {
+            "type": "or",
+            "operands": [{"type": "gpu_available"}, {"type": "mps_available"}],
+        }
+    )
     assert " or " in code.split("if ")[1]
 
 

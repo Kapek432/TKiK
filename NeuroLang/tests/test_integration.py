@@ -156,6 +156,3 @@ def test_full_compilation_multiple_networks(parser: Lark, compiler: NeuroLangCom
     assert "model_NetB = NetB().to(device)" in python_code
     assert "optimizer =" in python_code
     compile(python_code, "<generated>", "exec"), f"Code does not compile: {python_code}"
-
-
-

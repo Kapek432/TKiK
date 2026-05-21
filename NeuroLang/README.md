@@ -367,14 +367,39 @@ NeuroLang/
 ├── components.json           # Mapowanie warstw NeuroLang -> klasy PyTorch
 ├── datasets.json             # Wbudowane datasety (MNIST, CIFAR, ...)
 ├── config.yaml               # Konfiguracja projektu (ścieżki, logging, walidacja)
-├── pyproject.toml            # Definicja pakietu, zależności, skrypty CLI
-├── examples/                 # Programy NeuroLang (.nl)
-├── data/                     # Przykładowe pliki csv
-└── src/                      # Kod kompilatora
-    ├── cli/                  # Punkty wejścia 
-    │   ├── compile.py
-    │   └── show_ast.py
-    ├── parser/               # Wrapper na Lark
+├── pyproject.toml            # Pakiet, zależności, skrypty CLI i neurolang-web
+├── uv.lock
+├── examples/                 # Programy NeuroLang (.nl), err_*, catalog.json
+├── data/                     # CSV, MNIST, RUNBOOK, notatki (parser, semantic, ...)
+├── tests/                    # pytest (semantyka, generator, integracja, CLI, API)
+├── output/                   # Wygenerowane .py i studio_run/ (gitignored)
+├── vscode-extension/
+│   └── neurolang/            # Rozszerzenie VS Code/Cursor dla plików .nl
+│       ├── syntaxes/         # neurolang.tmLanguage.json
+│       ├── snippets/
+│       └── package.json
+├── web/                      # NeuroLang Studio (GUI)
+│   ├── README.md
+│   ├── backend/              # FastAPI (REST + SSE)
+│   │   ├── main.py           # neurolang-web
+│   │   ├── schemas.py
+│   │   └── routes/
+│   │       ├── compile.py    # POST /api/compile, /api/ast
+│   │       ├── examples.py
+│   │       ├── metadata.py
+│   │       └── run.py        # POST /api/run (uruchomienie skryptu)
+│   └── frontend/             # React + Vite + Monaco
+│       ├── src/
+│       │   ├── App.tsx
+│       │   ├── api/client.ts
+│       │   ├── components/   # edytor, zakładki, planer, sidebar
+│       │   └── monaco/       # TextMate + motyw składni
+│       └── public/syntaxes/  # kopia gramatyki z vscode-extension
+└── src/                      # Kompilator
+    ├── cli/
+    │   ├── compile.py        # neurolang (-r uruchom, -v wizualizacja)
+    │   └── show_ast.py       # neurolang-ast
+    ├── parser/
     │   └── grammar.py
     ├── semantic/             # Dwufazowa analiza semantyczna
     │   ├── visitor.py        # pass 1 - top-down (let, network shape)
@@ -382,8 +407,8 @@ NeuroLang/
     │   ├── shape_inference.py
     │   ├── validators.py
     │   └── symbol_table.py
-    ├── codegen/              # Generator kodu PyTorch 
-    │   ├── generator.py      # Orkiestrator
+    ├── codegen/              # Generator kodu PyTorch
+    │   ├── generator.py      # orkiestrator
     │   ├── imports.py
     │   ├── device.py
     │   ├── data.py
@@ -393,10 +418,13 @@ NeuroLang/
     │   ├── conditions.py
     │   ├── control_flow.py
     │   ├── task.py
-    │   ├── indent.py
-    ├── config.py             # Wczytywanie config.yaml
-    ├── loaders.py            # Ładowanie plików (yaml, json, text)
-    └── logger.py             # Konfiguracja loggera
+    │   └── indent.py
+    ├── services/             # Warstwa współdzielona przez CLI i Studio
+    │   ├── compiler_service.py
+    │   └── run_service.py
+    ├── config.py
+    ├── loaders.py
+    └── logger.py
 ```
 
 ## Architektura kompilatora
@@ -423,7 +451,7 @@ Każdy komunikat błędu zawiera **numer linii i kolumny** (`[L: ?, C: ?]`).
 
 ## Testy
 
-Projekt zawiera **81 testów automatycznych** w katalogu `tests/` (pokrywających semantykę, generator, integrację end-to-end i CLI).
+Projekt zawiera **84 testy automatyczne** w katalogu `tests/` (semantyka, generator, integracja end-to-end, CLI, warstwa `services/` dla API).
 
 ```bash
 uv run python -m pytest -v
@@ -457,3 +485,20 @@ cp -r vscode-extension/neurolang ~/.vscode/extensions/neurolang-0.1.0
 Następnie zrestartuj edytor (`Cmd+Shift+P` -> `Developer: Reload Window`).
 
 Szczegóły, inne metody instalacji (pakiet `.vsix`, tryb deweloperski `F5`) i pełna lista snippetów: [`vscode-extension/neurolang/README.md`](vscode-extension/neurolang/README.md).
+
+## NeuroLang Studio (GUI webowe)
+
+Interfejs webowy **FastAPI + React** do edycji plików `.nl`, kompilacji, uruchamiania wygenerowanego skryptu (`Uruchom`, logi SSE), planowania potoku (checklist + szablony), podglądu AST, grafu i błędów — bez terminala.
+
+```bash
+# terminal 1 - API
+uv sync --extra gui
+uv run neurolang-web
+
+# terminal 2 - UI
+cd web/frontend && npm install && npm run dev
+```
+
+Przeglądarka: **http://localhost:5173**
+
+Szczegóły: [`web/README.md`](web/README.md).

@@ -8,7 +8,7 @@ from src.codegen.indent import CodeBuffer, format_value, quote_string
 def generate_variable(buffer: CodeBuffer, instr: dict[str, Any], indent: int = 0) -> None:
     """
     Dodaje przypisanie zmiennej (literal, liczba, boolean lub napis).
-    
+
     Argumenty:
         buffer (CodeBuffer): Bufor kodu
         instr (dict[str, Any]): Słownik instrukcji
@@ -23,7 +23,7 @@ def generate_load_weights(
 ) -> None:
     """
     Dodaje opcjonalne wczytanie wag modelu z pliku.
-    
+
     Argumenty:
         buffer (CodeBuffer): Bufor kodu
         instr (dict[str, Any]): Słownik instrukcji
@@ -51,7 +51,7 @@ def generate_save_weights(
 ) -> None:
     """
     Dodaje zapis wag do pliku.
-    
+
     Argumenty:
         buffer (CodeBuffer): Bufor kodu
         instr (dict[str, Any]): Słownik instrukcji
@@ -70,7 +70,7 @@ def generate_export(
 ) -> None:
     """
     Dodaje eksport modelu do formatu ONNX.
-    
+
     Argumenty:
         buffer (CodeBuffer): Bufor kodu
         instr (dict[str, Any]): Słownik instrukcji
@@ -95,7 +95,7 @@ def generate_print_commands(
 ) -> None:
     """
     Dodaje instrukcje print w wariantach string, summary i wyrażenie.
-    
+
     Argumenty:
         buffer (CodeBuffer): Bufor kodu
         instr (dict[str, Any]): Słownik instrukcji
@@ -117,7 +117,7 @@ def generate_summary(
 ) -> None:
     """
     Dodaje podsumowanie architektury - nazwa sieci i liczba parametrów.
-    
+
     Argumenty:
         buffer (CodeBuffer): Bufor kodu
         instr (dict[str, Any]): Słownik instrukcji
